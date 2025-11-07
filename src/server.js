@@ -2,20 +2,14 @@
 
 import express from "express";
 
+import authRoutes from "./routes/auth.route.js"
+import messageRoutes from "./routes/message.route.js"
+
 const app = express();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
-app.get("/api/auth/signup", (req, res) => {
-    res.send("Signup endpoint");
-});
+app.use("/api/auth", authRoutes);
+app.use("/api/message", messageRoutes);
 
-app.get("/api/auth/login", (req, res) => {
-    res.send("Login endpoint");
-});
-
-app.get("/api/auth/logout", (req, res) => {
-    res.send("Logout endpoint");
-});
-
-app.listen(PORT, () => console.log("Server running on port : "+PORT));
+app.listen(PORT, () => console.log("Server running on port : " + PORT));
