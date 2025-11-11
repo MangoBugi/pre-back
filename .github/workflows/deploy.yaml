@@ -28,4 +28,4 @@ jobs:
             sudo docker stop pre-back-container || true
             sudo docker rm pre-back-container || true
             sudo docker build -t pre-back-image .
-            sudo docker run -d -p 5000:5000 --name pre-back-container pre-back-image
+            sudo docker run -d -p 5000:5000 --env-file ~/pre-back/.env --name pre-back-container pre-back-image
