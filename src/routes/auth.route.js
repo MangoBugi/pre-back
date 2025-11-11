@@ -13,4 +13,8 @@ router.get("/logout", (req, res) => {
     res.send("Logout endpoint");
 });
 
+router.get("/ping", (req, res) => {
+    res.send("pong");
+});
+
 export default router;
