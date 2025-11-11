@@ -1,0 +1,31 @@
+name: Deploy to EC2 (with PAT)
+
+on:
+  push:
+    branches:
+      - main  # main에 push될 때마다 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GIT_TOKEN }}
+
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd ~/pre-back || git clone https://github.com/MangoBugi/pre-back.git ~/pre-back
+            cd ~/pre-back
+            git pull origin main
+            sudo docker stop pre-back-container || true
+            sudo docker rm pre-back-container || true
+            sudo docker build -t pre-back-image .
+            sudo docker run -d -p 5000:5000 --name pre-back-container pre-back-image
